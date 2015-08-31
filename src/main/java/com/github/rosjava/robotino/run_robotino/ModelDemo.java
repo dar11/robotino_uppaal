@@ -45,6 +45,9 @@ public class ModelDemo implements Runnable {
 
 	private Engine engine;
 	private int distance;
+	public Document doc;
+	public UppaalSystem sys;
+	private Thread t;
 
 	public ModelDemo(Engine engine, int distance) {
 		this.distance = distance;
@@ -269,41 +272,75 @@ public class ModelDemo implements Runnable {
 		}
 		return trace;
 	}
+	
+	public void check(int distance) {
+		try {
+		doc.setProperty("declaration", "int distance =" + distance + ";");
+		doc.save(new File("/home/daniel/rosjava_workspace/src/robotino/run_robotino/result.xml"));
+		
+		sys = compile(engine, doc);
+
+		// perform a random symbolic simulation and get a trace:
+		ArrayList<SymbolicTransition> trace = symbolicSimulation(engine,
+				sys);
+		System.out.println(trace.toString());
+		QueryFeedbackCustomized qf = new QueryFeedbackCustomized();
+
+		String query = "E<> Exp1.L1";
+		QueryVerificationResult r;
+		
+			r = engine.query(sys, options, query, qf);
+		
+		if (r.result == 'T') {
+			System.out.println("True: There is a Path to L1");
+		} else {
+			System.out.println("False: There is no Path to L1");
+		}
+		System.out
+				.println("===============================================");
+		} catch (EngineException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	} 
+
 
 	@Override
 	public void run() {
-		try {
+		
 
-			Document doc = createSampleModel(distance);
-			doc.save(new File("/home/daniel/rosjava_workspace/src/robotino/run_robotino/result.xml"));
-
+			doc = createSampleModel(distance);
+			try {
+				doc.save(new File("/home/daniel/rosjava_workspace/src/robotino/run_robotino/result.xml"));
+			
 			// create a link to a local Uppaal process:
-			UppaalSystem sys = compile(engine, doc);
+			sys = compile(engine, doc);
 
 			// perform a random symbolic simulation and get a trace:
-			ArrayList<SymbolicTransition> trace = symbolicSimulation(engine,
-					sys);
-			System.out.println(trace.toString());
+//			ArrayList<SymbolicTransition> trace = symbolicSimulation(engine,
+//					sys);
+//			System.out.println(trace.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EngineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// save the trace to an XTR file:
 			// saveXTRFile(trace, "result.xtr");
 
 			// simple model-checking:
-			QueryFeedbackCustomized qf = new QueryFeedbackCustomized();
-
-			String query = "E<> Exp1.L1";
-			QueryVerificationResult r = engine.query(sys, options, query, qf);
-			if (r.result == 'T') {
-				System.out.println("True: There is a Path to L1");
-			} else {
-				System.out.println("False: There is no Path to L1");
-			}
-			System.out
-					.println("===============================================");
-
-		} catch (EngineException | IOException ex) {
-			ex.printStackTrace(System.err);
-			System.exit(1);
+			
+	}
+	
+	public void start() {
+		System.out.println("Starting ");
+		if (t == null) {
+			t = new Thread(this);
+			t.start();
 		}
 	}
 

@@ -49,6 +49,8 @@ public class Checker implements NodeMain {
 		final Log log = connectedNode.getLog();
 	    Subscriber<sensor_msgs.PointCloud> subscriber = connectedNode.newSubscriber("/distance_sensors", sensor_msgs.PointCloud._TYPE);
 		final Engine engine = connectToEngine();
+		final ModelDemo demo = new ModelDemo(engine, 100 );
+		demo.start();
 	    final ExecutorService executor = Executors.newFixedThreadPool(5);
 	    subscriber.addMessageListener(new MessageListener<sensor_msgs.PointCloud>() {
 			@Override
@@ -59,7 +61,8 @@ public class Checker implements NodeMain {
 				int dist = (int) (distance * 100);
 				//log.info("Distance: " + distance + "\"");
 				if (dist != actualDistance) {
-					modelCheck(engine, dist, executor);
+					System.out.println("Distanz ist " + dist);
+					demo.check(dist);
 				}
 				actualDistance = dist;
 			}
