@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>int distance =40;</declaration>
+	<template>
+		<name>Experiment</name>
+		<location id="id0" x="150" y="0">
+			<name x="150" y="-28">L1</name>
+		</location>
+		<location id="id1" x="0" y="0">
+			<name x="0" y="-28">L0</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="60" y="-28">distance&gt;30</label>
+		</transition>
+	</template>
+	<system>Exp1=Experiment();
+
+system Exp1;</system>
+	<queries>
+	</queries>
+</nta>

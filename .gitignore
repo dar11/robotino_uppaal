@@ -1,0 +1,11 @@
+*.class
+*.jar
+hs_err_pid*
+/bin
+/build
+build.gradle
+verifyta
+server
+.classpath
+.project
+.settings/
