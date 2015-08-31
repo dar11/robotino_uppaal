@@ -11,12 +11,23 @@ import org.ros.node.NodeMainExecutor;
 import com.google.common.base.Preconditions;
 import com.uppaal.engine.Engine;
 
+
+
 public class Main {
 	//Main
 	private static DriveWidget widget = new DriveWidget();
 	private static Checker checker = new Checker();
 	
 	public static void main(String[] args) {
+		LaunchRobotino launch = new LaunchRobotino("Launch robot");
+		launch.start();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
 		
 		NodeConfiguration widgetConfig = NodeConfiguration.newPublic("10.0.2.15");
