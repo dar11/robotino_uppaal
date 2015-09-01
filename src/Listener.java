@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.rosjava.robotino.run_robotino;
+
 
 import org.apache.commons.logging.Log;
 import org.ros.message.MessageListener;

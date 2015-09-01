@@ -1,4 +1,4 @@
-package com.github.rosjava.robotino.run_robotino;
+
 import org.apache.commons.logging.Log;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;

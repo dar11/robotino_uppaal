@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.rosjava.robotino.run_robotino;
+
 
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;

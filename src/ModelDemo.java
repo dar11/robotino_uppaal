@@ -1,4 +1,4 @@
-package com.github.rosjava.robotino.run_robotino;
+
 
 /**
  * A sample Java code demonstrating the use of lib/model.jar.

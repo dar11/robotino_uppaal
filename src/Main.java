@@ -1,4 +1,4 @@
-package com.github.rosjava.robotino.run_robotino;
+
 
 import javax.swing.UIManager;
 
