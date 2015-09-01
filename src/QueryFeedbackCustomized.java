@@ -3,8 +3,6 @@
 
 
 import java.util.ArrayList;
-import java.util.Vector;
-
 import com.uppaal.engine.QueryFeedback;
 import com.uppaal.engine.QueryVerificationResult;
 import com.uppaal.model.system.symbolic.SymbolicTransition;

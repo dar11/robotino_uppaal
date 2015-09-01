@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
 import com.uppaal.engine.CannotEvaluateException;
 import com.uppaal.engine.Engine;
 import com.uppaal.engine.EngineException;
@@ -168,7 +166,6 @@ public class ModelDemo implements Runnable {
 		for (int i = 0; i < sys.getNoOfVariables(); i++) {
 			System.out.print(sys.getVariableName(i) + "=" + val.get(i) + ", ");
 		}
-		List<String> constraints = new ArrayList<String>();
 		// s.getPolyhedron().getAllConstraints(constraints);
 		// for (String cs : constraints) {
 		// System.out.print(cs + ", ");

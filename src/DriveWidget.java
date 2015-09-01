@@ -9,13 +9,10 @@ import org.ros.node.topic.Publisher;
 import geometry_msgs.Twist;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -23,6 +20,13 @@ import javax.swing.JLabel;
 
 public class DriveWidget extends JComponent implements NodeMain {
 	
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 
 
 	@Override

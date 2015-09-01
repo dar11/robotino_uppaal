@@ -5,9 +5,6 @@ import geometry_msgs.Point32;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.apache.commons.logging.Log;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -46,12 +43,10 @@ public class Checker implements NodeMain {
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
-		final Log log = connectedNode.getLog();
-	    Subscriber<sensor_msgs.PointCloud> subscriber = connectedNode.newSubscriber("/distance_sensors", sensor_msgs.PointCloud._TYPE);
+		Subscriber<sensor_msgs.PointCloud> subscriber = connectedNode.newSubscriber("/distance_sensors", sensor_msgs.PointCloud._TYPE);
 		final Engine engine = connectToEngine();
 		final ModelDemo demo = new ModelDemo(engine, 100 );
 		demo.start();
-	    final ExecutorService executor = Executors.newFixedThreadPool(5);
 	    subscriber.addMessageListener(new MessageListener<sensor_msgs.PointCloud>() {
 			@Override
 			public void onNewMessage(PointCloud message) {
@@ -83,7 +78,6 @@ public class Checker implements NodeMain {
 	}
 	
 	public Engine connectToEngine() {
-		String os = System.getProperty("os.name");
 		String path = null;
 		path = "/home/daniel/uppaal64-4.1.19/bin-Linux/server";
 		System.out.println(path);

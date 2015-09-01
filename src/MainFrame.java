@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 
 public class MainFrame extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected final DriveWidget driveComponent;
 	protected final JPanel centerPanel;
 	
