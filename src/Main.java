@@ -15,7 +15,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		LaunchRobotino launch = new LaunchRobotino("Launch robot");
-		launch.start();
+		Thread thread = new Thread(launch);
+		thread.setDaemon(true);
+		thread.start();
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
