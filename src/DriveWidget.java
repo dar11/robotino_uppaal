@@ -13,6 +13,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -63,13 +65,13 @@ public class DriveWidget extends JComponent implements NodeMain {
 	
 	
 	public void createGUI(final Publisher<geometry_msgs.Twist> publisher) {
-		JButton buttonUp = new JButton("Links");
-		JButton buttonDown = new JButton("Rechts");
-		JButton buttonLeft = new JButton("Rückwärts");
-		JButton buttonRight = new JButton("Vorwärts");
-		JButton buttinStop = new JButton("Stop");
-		JButton buttonTurnRight = new JButton("Turn Right");
-		JButton buttonTurnLeft = new JButton("Turn Left");
+		JButton buttonUp = new JButton(getIcon("n"));
+		JButton buttonDown = new JButton(getIcon("s"));
+		JButton buttonLeft = new JButton(getIcon("w"));
+		JButton buttonRight = new JButton(getIcon("o"));
+		JButton buttinStop = new JButton(getIcon("stop"));
+		JButton buttonTurnRight = new JButton(getIcon("cl"));
+		JButton buttonTurnLeft = new JButton(getIcon("ccl"));
 		
 		buttonRight.addActionListener(new ButtonListener(publisher,1,0 ,0));
 		buttonLeft.addActionListener(new ButtonListener(publisher, -1, 0, 0));
@@ -80,23 +82,25 @@ public class DriveWidget extends JComponent implements NodeMain {
 		
 		JFrame frame = new JFrame("Robotino Steuerung");
 		Container container = frame.getContentPane();
-		container.setLayout(new GridLayout(3, 5));
+		container.setLayout(new GridLayout(3, 3));
 		
-		container.add(new JLabel());
 		container.add(buttonTurnLeft);
 		container.add(buttonUp);
 		container.add(buttonTurnRight);
-		container.add(new JLabel());
 		container.add(buttonLeft);
 		container.add(buttinStop);
 		container.add(buttonRight);
-		container.add(new JLabel());
 		container.add(new JLabel());
 		container.add(buttonDown);
 		
 		frame.setSize(600, 400);
 		frame.setVisible(true);
 	}
+	
+	private Icon getIcon(String name) {
+        return new ImageIcon(getClass().getResource("icons/" + name + ".png"));
+}
+
 	
 
 	
