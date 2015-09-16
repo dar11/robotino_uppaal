@@ -57,7 +57,7 @@ public class Checker implements NodeMain {
 				//log.info("Distance: " + distance + "\"");
 				if (dist != actualDistance) {
 					System.out.println("Distanz ist " + dist);
-					demo.check(dist);
+					//demo.check(dist);
 				}
 				actualDistance = dist;
 			}

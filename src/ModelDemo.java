@@ -173,25 +173,46 @@ public class ModelDemo implements Runnable {
 		System.out.println(")");
 	}
 
-	public Document createSampleModel(int distance) {
+	public Document createSampleModel() {
 		// create a new Uppaal model with default properties:
 		Document doc = new Document(new PrototypeDocument());
 		// add global variables:
-		doc.setProperty("declaration", "int distance =" + distance + ";");
+		doc.setProperty("declaration", "chan r, o" + ";");
 		// add a TA template:
-		Template t = doc.createTemplate();
-		doc.insert(t, null);
-		t.setProperty("name", "Experiment");
+		Template robot = doc.createTemplate();
+		doc.insert(robot, null);
+		robot.setProperty("name", "Robot");
+		robot.setProperty("declaration", "int x = 0, y = 0;\n\n" + "int v = 0;");
 		// the template has initial location:
-		Location l0 = addLocation(t, "L0", null, 0, 0);
-		l0.setProperty("init", true);
-		// add another location to the right:
-		Location l1 = addLocation(t, "L1", null, 150, 0);
-
-		addEdge(t, l0, l1, "distance>30", null, null);
+		Location idle = addLocation(robot, "Idle", null, 0, 0);
+		idle.setProperty("init", true);
+		addEdge(robot, idle, idle, null, "r?", null);
+		
+		Template coord = doc.createTemplate();
+		doc.insert(coord, null);
+		coord.setProperty("name", "Coordinator");
+		Location moveObject = addLocation(coord, "MoveObject", null, 0, 0);
+		moveObject.setProperty("init", true);
+		Location moveRobot = addLocation(coord, "MoveRobot", null, 0, 10);
+		addEdge(coord, moveObject, moveRobot, null, "r!", null);
+		addEdge(coord, moveRobot, moveObject, null, "o!", null);
+		
+		Template obstacle = doc.createTemplate();
+		doc.insert(obstacle, null);
+		doc.setProperty("name", "Obstacle");
+		doc.setProperty("declaration", "int x = 10, y = 0;\n" + "int v = 5;");
+		Location obstacleIdle = addLocation(obstacle, "idle", null, 0, 0);
+		obstacleIdle.setProperty("init", true);
+		Location moving = addLocation(obstacle, "Moving", null, 0, 10);
+		addEdge(obstacle, idle, idle, "x<=0", "o?", null);
+		addEdge(obstacle, idle, moving, "x>0", "o?", "x=x-1");
+		addEdge(obstacle, moving, moving, "x>0", "o?", "x=x-1");
+		addEdge(obstacle, moving, idle, "x<=0", "o?", null);
+		
+		
 
 		// add system declaration:
-		doc.setProperty("system", "Exp1=Experiment();\n\n" + "system Exp1;");
+		doc.setProperty("system", "R = Robot();\n" + "C = Coordinator();\n" + "O = Obstacle();\n\n" + "system R, C, O;");
 		return doc;
 	}
 
@@ -307,9 +328,14 @@ public class ModelDemo implements Runnable {
 	public void run() {
 		
 
-			doc = createSampleModel(distance);
+			doc = createSampleModel();
+			if (doc == null) {
+				System.out.println("Doc ist null");
+			} else {
+				System.out.println("Doc ist nicht null");
+			}
 			try {
-				doc.save(new File("/home/daniel/rosjava_workspace/src/robotino/run_robotino/result.xml"));
+				doc.save(new File("/home/daniel/rosjava_workspace/src/robotino/run_robotino/dointNothing.xml"));
 			
 			// create a link to a local Uppaal process:
 			sys = compile(engine, doc);
