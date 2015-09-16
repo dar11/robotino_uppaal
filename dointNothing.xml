@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
-	<declaration>int x = 10, y = 0;
-int v = 5;</declaration>
+	<declaration>chan r, o;</declaration>
 	<template>
-		<name></name>
-		<location id="id0" x="0" y="10">
-			<name x="0" y="-18">Moving</name>
+		<name>Obstacle</name>
+		<declaration>int x = 10, y = 0;
+int v = 5;</declaration>
+		<location id="id0" x="200" y="0">
+			<name x="200" y="-28">Moving</name>
 		</location>
 		<location id="id1" x="0" y="0">
 			<name x="0" y="-28">idle</name>
@@ -14,4 +15,70 @@ int v = 5;</declaration>
 		<init ref="id1"/>
 		<transition>
 			<source ref="id0"/>
-			<target ref="
+			<target ref="id1"/>
+			<label kind="guard" x="85" y="-28">x&lt;=0</label>
+			<label kind="synchronisation" x="85" y="-14">o?</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id0"/>
+			<label kind="guard" x="185" y="-28">x&gt;0</label>
+			<label kind="synchronisation" x="185" y="-14">o?</label>
+			<label kind="assignment" x="185" y="0">x=x-1</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="85" y="-28">x&gt;0</label>
+			<label kind="synchronisation" x="85" y="-14">o?</label>
+			<label kind="assignment" x="85" y="0">x=x-1</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-15" y="-28">x&lt;=0</label>
+			<label kind="synchronisation" x="-15" y="-14">o?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Coordinator</name>
+		<location id="id2" x="200" y="0">
+			<name x="200" y="-28">MoveRobot</name>
+		</location>
+		<location id="id3" x="0" y="0">
+			<name x="0" y="-28">MoveObject</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="85" y="-14">o!</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="85" y="-14">r!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Robot</name>
+		<declaration>int x = 0, y = 0;
+
+int v = 0;</declaration>
+		<location id="id4" x="0" y="0">
+			<name x="0" y="-28">Idle</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-15" y="-14">r?</label>
+		</transition>
+	</template>
+	<system>R = Robot();
+C = Coordinator();
+O = Obstacle();
+system R, C, O;</system>
+	<queries>
+	</queries>
+</nta>

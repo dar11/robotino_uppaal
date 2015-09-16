@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import com.sun.org.apache.xerces.internal.impl.xs.opti.NamedNodeMapImpl;
 import com.uppaal.engine.CannotEvaluateException;
 import com.uppaal.engine.Engine;
 import com.uppaal.engine.EngineException;
@@ -29,6 +31,7 @@ import com.uppaal.engine.QueryVerificationResult;
 import com.uppaal.model.core2.Document;
 import com.uppaal.model.core2.Edge;
 import com.uppaal.model.core2.Location;
+import com.uppaal.model.core2.Nail;
 import com.uppaal.model.core2.Property;
 import com.uppaal.model.core2.PrototypeDocument;
 import com.uppaal.model.core2.Template;
@@ -177,7 +180,7 @@ public class ModelDemo implements Runnable {
 		// create a new Uppaal model with default properties:
 		Document doc = new Document(new PrototypeDocument());
 		// add global variables:
-		doc.setProperty("declaration", "chan r, o" + ";");
+		doc.setProperty("declaration", "chan r, o;");
 		// add a TA template:
 		Template robot = doc.createTemplate();
 		doc.insert(robot, null);
@@ -193,26 +196,27 @@ public class ModelDemo implements Runnable {
 		coord.setProperty("name", "Coordinator");
 		Location moveObject = addLocation(coord, "MoveObject", null, 0, 0);
 		moveObject.setProperty("init", true);
-		Location moveRobot = addLocation(coord, "MoveRobot", null, 0, 10);
+		Location moveRobot = addLocation(coord, "MoveRobot", null, 200, 0);
 		addEdge(coord, moveObject, moveRobot, null, "r!", null);
 		addEdge(coord, moveRobot, moveObject, null, "o!", null);
 		
+		
 		Template obstacle = doc.createTemplate();
 		doc.insert(obstacle, null);
-		doc.setProperty("name", "Obstacle");
-		doc.setProperty("declaration", "int x = 10, y = 0;\n" + "int v = 5;");
+		obstacle.setProperty("name", "Obstacle");
+		obstacle.setProperty("declaration", "int x = 10, y = 0;\n" + "int v = 5;");
 		Location obstacleIdle = addLocation(obstacle, "idle", null, 0, 0);
 		obstacleIdle.setProperty("init", true);
-		Location moving = addLocation(obstacle, "Moving", null, 0, 10);
-		addEdge(obstacle, idle, idle, "x<=0", "o?", null);
-		addEdge(obstacle, idle, moving, "x>0", "o?", "x=x-1");
+		Location moving = addLocation(obstacle, "Moving", null, 200, 0);
+		addEdge(obstacle, obstacleIdle, obstacleIdle, "x<=0", "o?", null);
+		addEdge(obstacle, obstacleIdle, moving, "x>0", "o?", "x=x-1");
 		addEdge(obstacle, moving, moving, "x>0", "o?", "x=x-1");
-		addEdge(obstacle, moving, idle, "x<=0", "o?", null);
+		addEdge(obstacle, moving, obstacleIdle, "x<=0", "o?", null);
 		
 		
 
 		// add system declaration:
-		doc.setProperty("system", "R = Robot();\n" + "C = Coordinator();\n" + "O = Obstacle();\n\n" + "system R, C, O;");
+		doc.setProperty("system", "R = Robot();\n" + "C = Coordinator();\n" + "O = Obstacle();\n" + "system R, C, O;");
 		return doc;
 	}
 
