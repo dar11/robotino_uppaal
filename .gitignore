@@ -10,3 +10,4 @@ server
 .project
 .settings/
 src/icons/
+/models
